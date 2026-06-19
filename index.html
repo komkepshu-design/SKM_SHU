@@ -989,11 +989,21 @@ function getBulanKey(ts){
     return '';
   }
 
-  // Format 2: yyyy-MM-dd  (ISO)
+  // Format 2: yyyy-MM-dd  (ISO, dari form input type=date)
   const m2 = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
   if(m2){
     y = parseInt(m2[1]);
     m = parseInt(m2[2]);
+    if(y >= 2020 && y <= 2099 && m >= 1 && m <= 12)
+      return `${y}-${String(m).padStart(2,'0')}`;
+    return '';
+  }
+
+  // Format 3: d-M-yyyy atau dd-MM-yyyy (dari Google Form Timestamp, misal: 1-4-2026 11:16:00)
+  const m3 = s.match(/^(\d{1,2})-(\d{1,2})-(\d{4})/);
+  if(m3){
+    y = parseInt(m3[3]);
+    m = parseInt(m3[2]);
     if(y >= 2020 && y <= 2099 && m >= 1 && m <= 12)
       return `${y}-${String(m).padStart(2,'0')}`;
     return '';
@@ -2213,13 +2223,16 @@ function renderSaranList(){
   const more  = filtered.length - shown.length;
   window._shownSaran = shown;  // simpan untuk akses onclick
   sec.innerHTML = shown.map((x, idx)=>{
-    // Format tanggal dari kolom B: dd/MM/yyyy HH:mm atau dd/MM/yyyy HH:mm:ss
+    // Format tanggal dari kolom B: dd/MM/yyyy, d-M-yyyy, atau yyyy-MM-dd
     let tglLabel = '';
     if(x.timestamp){
       const ts = String(x.timestamp).trim();
-      // Ambil bagian tanggal saja dd/MM/yyyy
-      const m = ts.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-      if(m) tglLabel = m[1]+'/'+m[2]+'/'+m[3];
+      const mSlash = ts.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+      const mDash  = ts.match(/^(\d{1,2})-(\d{1,2})-(\d{4})/);
+      const mIso   = ts.match(/^(\d{4})-(\d{2})-(\d{2})/);
+      if(mSlash) tglLabel = mSlash[1]+'/'+mSlash[2]+'/'+mSlash[3];
+      else if(mDash) tglLabel = mDash[1]+'/'+mDash[2]+'/'+mDash[3];
+      else if(mIso)  tglLabel = mIso[3]+'/'+mIso[2]+'/'+mIso[1];
       else tglLabel = ts.slice(0,10);
     }
     const unitLabel = x.unit ? x.unit : '';
@@ -2616,16 +2629,16 @@ function exportToExcel(){
   }
 
   const Q = [
-    '1. Bagaimana pendapat Bapak/ Ibu tentang kesesuaian persyaratan pelayanan yang diinformasikan dengan  jenis pelayanan yang didapatkan di RS\nPilihan jawaban :\n1. Tidak sesuai\n2. Kurang sesuai\n3. Sesuai\n4. Sangat sesuai',
+    '1. Bagaimana pendapat Saudara tentang kesesuaian persyaratan pelayanan yang diinformasikan dengan  jenis pelayanan yang didapatkan di Unit ini*\nPilihan jawaban :\n1. Tidak sesuai\n2. Kurang sesuai\n3. Sesuai\n4. Sangat sesuai',
     '2. Bagaimana  pemahaman Bapak/ Ibu tentang kemudahan prosedur pelayanan yang didapatkan di unit ini*\nPilihan jawaban :\n1. Tidak mudah\n2. Kurang mudah\n3. Mudah\n4. Sangat Mudah',
     '3. Bagaimana pendapat Bapak/ Ibu tentang kecepatan waktu dalam memberikan pelayanan di unit ini*\nPilihan jawaban :\n1. Tidak cepat\n2. Kurang cepat\n3. Cepat\n4. Sangat cepat',
-    '4. Bagaimana pendapat Bapak/ Ibu tentang kewajaran biaya/tarif dalam pelayanan di RS*\nPilihan jawaban : \n1. Sangat mahal\n2. Cukup mahal\n3. Murah\n4. Gratis',
+    '4. Bagaimana pendapat Bapak/ Ibu tentang kewajaran biaya/tarif dalam pelayanan di Unit ini*\nPilihan jawaban : \n1. Sangat mahal\n2. Cukup mahal\n3. Murah\n4. Gratis',
     '5. Bagaimana pendapat Bapak/ Ibu tentang kesesuaian produk pelayanan  di unit ini antara yang tercantum dalam standar pelayanan dengan hasil yang diberikan.\nPilihan jawaban :\n1. Tidak sesuai\n2. Kurang sesuai\n3. Sesuai\n4. Sangat sesuai',
     '6. Bagaimana   pendapat   Bapak/ Ibu  tentang  kompetensi/ kemampuan petugas di unit ini dalam memberikan pelayanan*\nPilihan jawaban :\n1. Tidak kompeten\n2. kurang kompeten\n3. Kompeten\n4. Sangat kompeten',
-    '7. Bagamana pendapat Bapak/ Ibu perilaku petugas di unit ini dalam pelayanan terkait kesopanan dan keramahan*\nPilihan jawaban : \n1. Tidak sopan dan ramah\n2. Kurang sopan dan ramah\n3. Sopan dan ramah\n4. Sangat sopan dan ramah',
-    '8. Bagaimana pendapat Bapak/ibu tentang kualitas sarana dan prasarana di RS*\nPilihan jawaban :\n1. Buruk\n2. Cukup\n3. Baik\n4. Sangat Baik',
-    '9. Bagaimana pendapat Bapak/ Ibu tentang  penanganan pengaduan pengguna layanan di RS*\nPilihan jawaban : \n1. Tidak ada\n2. Ada tetapi tidak berfungsi\n3. Berfungsi kurang maksimal\n4. Dikelola dengan baik',
-    '10. Jika Bapak/Ibu ingin menyampaikan masukkan/saran untuk lebih meningkatkan kualitas layanan di RS kami, silakan tuliskan pada bagian yang disediakan berikut ini.',
+    '7. Bagaimana pendapat Bapak/ Ibu perilaku petugas di unit ini dalam pelayanan terkait kesopanan dan keramahan*\nPilihan jawaban : \n1. Tidak sopan dan ramah\n2. Kurang sopan dan ramah\n3. Sopan dan ramah\n4. Sangat sopan dan ramah',
+    '8. Bagaimana pendapat Bapak/ibu tentang kualitas sarana dan prasarana di Unit*\nPilihan jawaban :\n1. Buruk\n2. Cukup\n3. Baik\n4. Sangat Baik',
+    '9. Bagaimana pendapat Bapak/ Ibu tentang  penanganan pengaduan pengguna layanan di Unit*\nPilihan jawaban : \n1. Tidak ada\n2. Ada tetapi tidak berfungsi\n3. Berfungsi kurang maksimal\n4. Dikelola dengan baik',
+    '10. Kami sangat menghargai setiap masukan dan saran dari Saudara sebagai upaya peningkatan mutu pelayanan Rumah Sakit.Untuk itu, mohon berkenan mengisi kolom masukan dan saran yang telah disediakan.*',
   ];
 
   // Header row — persis seperti Sheet1 Excel asli
