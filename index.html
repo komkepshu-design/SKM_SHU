@@ -1052,6 +1052,33 @@ function getFiltered(){
   });
 }
 
+// ── Daftar unit tetap (sesuai pilihan form survei), dipakai utk dropdown filter
+const UNIT_FILTER_LIST = [
+  'IGD',
+  'Pendaftaran/Front Office',
+  'Rawat Jalan/Poliklinik',
+  'Rawat Jalan Executive',
+  'ESWL',
+  'Ruang Bersalin',
+  'Ruang Bayi',
+  'Ruang Operasi',
+  'Ruang Hemodialisa',
+  'Unit Laboratorium',
+  'Unit Radiologi',
+  'Unit Rekam Medis',
+  'Unit Gizi',
+  'Instalasi Farmasi Rawat Jalan',
+  'Instalasi Farmasi Rawat Inap',
+  'ICU/PICU',
+  'Ruang Rawat Inap Basement',
+  'Rawat Inap Lantai 3',
+  'Ruang Rawat Inap Executive Lantai 4',
+  'Parkir',
+  'Cleaning Service',
+  'Keamanan',
+  'Kasir',
+];
+
 // ── Build filter options from live data
 function buildFilterOptions(){
   const bulanSet = new Set();
@@ -1076,11 +1103,11 @@ function buildFilterOptions(){
     bSel.appendChild(opt);
   });
 
-  // Unit dropdown
+  // Unit dropdown — pakai daftar unit tetap, bukan hasil scan data
   const uSel = document.getElementById('f-unit-filter');
   const uCur = uSel.value;
   uSel.innerHTML = '<option value="">Semua Unit</option>';
-  [...unitSet].sort().forEach(u=>{
+  UNIT_FILTER_LIST.forEach(u=>{
     const opt = document.createElement('option');
     opt.value = u; opt.textContent = u;
     if(u===uCur) opt.selected=true;
