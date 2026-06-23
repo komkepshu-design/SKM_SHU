@@ -902,32 +902,33 @@ const SQ_META = [
 // TARGET SAMPEL PER UNIT (dari Excel Krejcie-Morgan)
 // Mapping: nama di Excel → nama unit di data survei
 // ═══════════════════════════════════════════════
-// targetS = target 6 bulan/semester (kolom D, dibulatkan)
-// targetB = target per bulan (kolom E)
+// targetS = target 6 bulan/semester (Rumus Krejcie-Morgan)
+// targetB = target per bulan (Rumus Krejcie-Morgan)
+// Sumber: Sample_Survey_per_Unit_2026 — Sheet "Fix"
 const TARGET_SAMPEL = [
-  {unit:'IGD',                   targetS:371, targetB:62, aliases:['IGD']},
-  {unit:'Pendaftaran/FO',        targetS:382, targetB:64, aliases:['Pendaftaran/Front Office','Pendaftaran','Front Office','FO']},
-  {unit:'Rawat Jalan',           targetS:381, targetB:64, aliases:['Rawat Jalan/Poliklinik','Poliklinik','Rawat Jalan']},
-  {unit:'RJ Executive',          targetS:200, targetB:34, aliases:['Rawat Jalan Executive','RJ Executive']},
-  {unit:'ESWL',                  targetS:80,  targetB:14, aliases:['ESWL']},
-  {unit:'Ruang Bersalin',        targetS:285, targetB:48, aliases:['Ruang Bersalin','VK','Kamar Bersalin']},
-  {unit:'Ruang Bayi',            targetS:225, targetB:38, aliases:['Ruang Bayi','R Bayi']},
-  {unit:'Ruang Operasi',         targetS:89,  targetB:15, aliases:['Ruang Operasi','OK','Kamar Operasi']},
-  {unit:'Hemodialisa',           targetS:345, targetB:58, aliases:['Ruang Hemodialisa','Hemodialisa','HD']},
-  {unit:'Laboratorium',          targetS:369, targetB:62, aliases:['Unit Laboratorium','Laboratorium','Lab']},
-  {unit:'Radiologi',             targetS:352, targetB:59, aliases:['Unit Radiologi','Radiologi','Ronsen']},
-  {unit:'Rekam Medis',           targetS:200, targetB:34, aliases:['Unit Rekam Medis','Rekam Medis']},
-  {unit:'Gizi',                  targetS:325, targetB:54, aliases:['Unit Gizi','Gizi']},
-  {unit:'Farmasi Rawat Jalan',   targetS:381, targetB:64, aliases:['Instalasi Farmasi Rawat Jalan','Farmasi Rawat Jalan','Farmasi Rajal']},
-  {unit:'Farmasi Rawat Inap',    targetS:381, targetB:64, aliases:['Instalasi Farmasi Rawat Inap','Farmasi Rawat Inap','Farmasi Ranap']},
-  {unit:'ICU/PICU',              targetS:57,  targetB:10, aliases:['ICU/PICU','ICU','PICU']},
-  {unit:'RI Basement',           targetS:200, targetB:34, aliases:['Ruang Rawat Inap Basement','RI Basement','Rawat Inap Basement']},
-  {unit:'RI Lantai 3',           targetS:163, targetB:27, aliases:['Rawat Inap Lantai 3','RI Lantai 3']},
-  {unit:'RI Executive Lt.4',     targetS:120, targetB:20, aliases:['Ruang Rawat Inap Executive Lantai 4','RI Executive','RI Executive Lt.4']},
-  {unit:'Parkir',                targetS:200, targetB:34, aliases:['Parkir']},
-  {unit:'Cleaning Service',      targetS:200, targetB:34, aliases:['Cleaning Service','CS','Kebersihan']},
-  {unit:'Keamanan',              targetS:200, targetB:34, aliases:['Keamanan','Satpam','Security']},
-  {unit:'Kasir',                 targetS:382, targetB:64, aliases:['Kasir']},
+  {unit:'IGD',                   targetS:361,  targetB:60,  aliases:['IGD']},
+  {unit:'Pendaftaran/FO',        targetS:382,  targetB:64,  aliases:['Pendaftaran/Front Office','Pendaftaran','Front Office','FO']},
+  {unit:'Rawat Jalan',           targetS:382,  targetB:64,  aliases:['Rawat Jalan/Poliklinik','Poliklinik','Rawat Jalan']},
+  {unit:'RJ Executive',          targetS:76,   targetB:13,  aliases:['Rawat Jalan Executive','RJ Executive']},
+  {unit:'ESWL',                  targetS:0,    targetB:0,   aliases:['ESWL']},
+  {unit:'Ruang Bersalin',        targetS:162,  targetB:27,  aliases:['Ruang Bersalin','VK','Kamar Bersalin']},
+  {unit:'Ruang Bayi',            targetS:164,  targetB:27,  aliases:['Ruang Bayi','R Bayi']},
+  {unit:'Ruang Operasi',         targetS:306,  targetB:51,  aliases:['Ruang Operasi','OK','Kamar Operasi']},
+  {unit:'Hemodialisa',           targetS:358,  targetB:60,  aliases:['Ruang Hemodialisa','Hemodialisa','HD']},
+  {unit:'Laboratorium',          targetS:378,  targetB:63,  aliases:['Unit Laboratorium','Laboratorium','Lab']},
+  {unit:'Radiologi',             targetS:351,  targetB:58,  aliases:['Unit Radiologi','Radiologi','Ronsen']},
+  {unit:'Rekam Medis',           targetS:0,    targetB:0,   aliases:['Unit Rekam Medis','Rekam Medis']},
+  {unit:'Gizi',                  targetS:356,  targetB:59,  aliases:['Unit Gizi','Gizi']},
+  {unit:'Farmasi Rawat Jalan',   targetS:382,  targetB:64,  aliases:['Instalasi Farmasi Rawat Jalan','Farmasi Rawat Jalan','Farmasi Rajal','IFRJ']},
+  {unit:'Farmasi Rawat Inap',    targetS:356,  targetB:59,  aliases:['Instalasi Farmasi Rawat Inap','Farmasi Rawat Inap','Farmasi Ranap','DEPO']},
+  {unit:'ICU/PICU',              targetS:103,  targetB:17,  aliases:['ICU/PICU','ICU','PICU']},
+  {unit:'RI Basement',           targetS:286,  targetB:48,  aliases:['Ruang Rawat Inap Basement','RI Basement','Rawat Inap Basement']},
+  {unit:'RI Lantai 3',           targetS:335,  targetB:56,  aliases:['Rawat Inap Lantai 3','RI Lantai 3']},
+  {unit:'RI Executive Lt.4',     targetS:266,  targetB:44,  aliases:['Ruang Rawat Inap Executive Lantai 4','RI Executive','RI Executive Lt.4']},
+  {unit:'Parkir',                targetS:0,    targetB:0,   aliases:['Parkir']},
+  {unit:'Cleaning Service',      targetS:0,    targetB:0,   aliases:['Cleaning Service','CS','Kebersihan']},
+  {unit:'Keamanan',              targetS:0,    targetB:0,   aliases:['Keamanan','Satpam','Security']},
+  {unit:'Kasir',                 targetS:376,  targetB:63,  aliases:['Kasir']},
 ];
 
 function matchTarget(unitName){
