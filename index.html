@@ -1040,13 +1040,20 @@ function getSemesterLabel(s, year){
   return year ? names[s]+' '+year : (names[s]||s);
 }
 
+// ── Normalisasi nama unit utk perbandingan filter (rapikan spasi di sekitar "/")
+// Fix: form/sheet kadang nulis "Pendaftaran /Front Office" (spasi sebelum garis miring)
+// sementara UNIT_FILTER_LIST pakai "Pendaftaran/Front Office" (tanpa spasi) → exact match gagal.
+function normUnitStr(s){
+  return (s||'').toLowerCase().replace(/\s*\/\s*/g,'/').replace(/\s+/g,' ').trim();
+}
+
 // ── Get filtered live entries (SEED data not filtered since no timestamps)
 function getFiltered(){
   return liveEntries.filter(e=>{
     const bk = getBulanKey(e.timestamp);
     const bMatch = !activeFilter.bulan    || bk === activeFilter.bulan;
     const sMatch = !activeFilter.semester || getSemesterOfKey(bk) === activeFilter.semester;
-    const uMatch = !activeFilter.unit     || (e.unit||'') === activeFilter.unit;
+    const uMatch = !activeFilter.unit     || normUnitStr(e.unit) === normUnitStr(activeFilter.unit);
     return bMatch && sMatch && uMatch;
   });
 }
